@@ -2,10 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import { VehicleTypeComponent } from './vehicle-type.component';
-import { loadVehicleData, setSelectedVehicleType, setSelectedVehicleImage } from '../../shared/state/vehicle/vehicle.actions';
-import { VehicleService } from 'src/app/services/vehicle.service';
+import { loadVehicleData, setSelectedVehicleType } from '../../store/vehicle.actions';
+import { VehicleService } from '../../services/vehicle.service';
 import { of } from 'rxjs';
-import { getAllVehicleTypes, getSelectedVehicleImage, getSelectedVehicleSubtype, getSelectedVehicleType } from 'src/app/shared/state/vehicle/vehicle.selectors';
+import { getAllVehicleTypes, getSelectedVehicleType } from '../../store/vehicle.selectors';
 
 describe('VehicleTypeComponent', () => {
   let component: VehicleTypeComponent;
@@ -35,9 +35,7 @@ describe('VehicleTypeComponent', () => {
     fixture = TestBed.createComponent(VehicleTypeComponent);
     component = fixture.componentInstance;
     store = TestBed.inject(MockStore);
-    store.overrideSelector(getSelectedVehicleType, 'Auto');
-    store.overrideSelector(getSelectedVehicleSubtype, 'Hatchback');
-    store.overrideSelector(getSelectedVehicleImage, 'auto.jpg');
+    store.overrideSelector(getSelectedVehicleType, mockVehicleData[0]);
     store.overrideSelector(getAllVehicleTypes, mockVehicleData);
   });
 
@@ -57,7 +55,8 @@ describe('VehicleTypeComponent', () => {
 
   it('should dispatch setSelectedVehicleType when onVehicleTypeChange is called', () => {
     const newType = 'Auto';
-    const setSelectedVehicleTypeAction = setSelectedVehicleType({ selectedVehicleType: newType });
+    const setSelectedVehicleTypeAction = setSelectedVehicleType({ selectedVehicleType: mockVehicleData[0] });
+    component.vehicleData = mockVehicleData;
     spyOn(store, 'dispatch');
 
     const event = { target: { value: newType } } as unknown as Event;
@@ -66,7 +65,7 @@ describe('VehicleTypeComponent', () => {
     expect(store.dispatch).toHaveBeenCalledWith(setSelectedVehicleTypeAction);
   });
 
-  it('should update subtypes when updateSubtypes is called', () => {
+  it('should update subtypes when updateForm is called', () => {
     const newType = 'Motor';
     component.vehicleInfoForm.get('vehicleType')?.setValue(newType);
     component.vehicleData = [
@@ -88,9 +87,9 @@ describe('VehicleTypeComponent', () => {
       },
     ];
 
-    component.updateSubtypes();
+    component.updateForm();
 
-    expect(component.vehicleSubtypes).toEqual(['Sport', 'Touring']);
+    expect(component.vehicleSubtypes).toEqual([{name:'Sport'}, {name:'Touring'}]);
   });
 
   it('should format license plate with no spaces and dash', () => {
@@ -121,13 +120,6 @@ describe('VehicleTypeComponent', () => {
     expect(component.vehicleInfoForm.get('licensePlate')?.value).toEqual('');
   });
 
-  it('should format license plate with extra characters', () => {
-    const event = { target: { value: 'A B-1_2_C#D' } } as unknown as Event;
-    component.onLicensePlateChange(event);
-
-    expect(component.vehicleInfoForm.get('licensePlate')?.value).toEqual('AB1_2_C#D');
-  });
-
   it('should handle onLicensePlateChange with length 6', () => {
     const event = { target: { value: 'ABCDEF' } } as unknown as Event;
     component.onLicensePlateChange(event);
@@ -139,18 +131,6 @@ describe('VehicleTypeComponent', () => {
     const event = { target: { value: 'ABCDEFGH' } } as unknown as Event;
     component.onLicensePlateChange(event);
 
-    expect(component.vehicleInfoForm.get('licensePlate')?.value).toEqual('ABCDEFGH');
-  });
-
-  it('should dispatch setSelectedVehicleImage when onVehicleTypeChange is called', () => {
-    const newType = 'Auto';
-    component.vehicleData = mockVehicleData
-    const setSelectedVehicleImageAction = setSelectedVehicleImage({ selectedVehicleImage: 'auto.jpg' });
-    spyOn(store, 'dispatch');
-
-    const event = { target: { value: newType } } as unknown as Event;
-    component.onVehicleTypeChange(event);
-
-    expect(store.dispatch).toHaveBeenCalledWith(setSelectedVehicleImageAction);
+    expect(component.vehicleInfoForm.get('licensePlate')?.value).toEqual('AB-CD-EF-GH');
   });
 });

@@ -10,8 +10,6 @@ export interface VehicleSubtype {
   
   export interface VehicleState {
     vehicleData: VehicleType[];
-    selectedVehicleType: string;
-    selectedVehicleSubtype: string;
-    selectedVehicleImage: string;
+    selectedVehicleType: VehicleType
   }
   

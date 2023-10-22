@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { VehicleType } from '../shared/state/vehicle/vehicle.state';
+import { VehicleType } from '../store/vehicle.state';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +42,7 @@ export class VehicleService {
         image: 'scooter.jpg'
       },
     ];
+    console.log('you are done');
     return of(vehicleData);
   }
 }
