@@ -42,7 +42,6 @@ export class VehicleService {
         image: 'scooter.jpg'
       },
     ];
-    console.log('you are done');
     return of(vehicleData);
   }
 }
