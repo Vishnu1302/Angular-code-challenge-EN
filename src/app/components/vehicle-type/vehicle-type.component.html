@@ -1,0 +1,97 @@
+<!-- <div class="grid md:grid-cols-2">
+    <form [formGroup]="vehicleInfoForm" class="p-8" (ngSubmit)="submitForm()">
+      <h2 class="text-xl font-bold text-blue-500">Voertuiginformatie opzoeken</h2>
+  
+      <label class="block mt-4">
+        <span class="text-gray-700">Van welk type voertuig wilt u voertuiginformatie opzoeken?</span>
+        <select
+          class="block w-full mt-1 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+          formControlName="vehicleType" (change)="onVehicleTypeChange($event)">
+          <option *ngFor="let type of vehicleTypes" [value]="type">{{ type }}</option>
+        </select>
+      </label>
+  
+      <label class="block mt-4">
+        <span class="text-gray-700">Welk type [auto/motor/brommer] hebt u?</span>
+        <select [disabled]="selectedVehicleType === 'Scooter'"
+          class="block w-full mt-1 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+          formControlName="vehicleSubtype">
+          <option *ngFor="let subtype of vehicleSubtypes[selectedVehicleType]" [value]="subtype">{{ subtype }}</option>
+        </select>
+      </label>
+  
+      <label class="block mt-4">
+        <span class="text-gray-700">Vul het kenteken van uw [auto/motor/brommer] in.</span>
+        <input type="text"
+          class="mt-1 block w-full rounded-md bg-yellow-400 border-red-400 focus:border-gray-500 focus:bg-yellow-300 focus:ring-0"
+          formControlName="licensePlate" placeholder="Bijvoorbeeld AA-BB-12" (change)="onLicensePlateChange($event)">
+        <div *ngIf="vehicleInfoForm.get('licensePlate')?.hasError('pattern')"
+          class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-2" role="alert">
+          <div class="font-bold">Oeps, het ingevoerde kenteken is niet geldig.</div>
+          <div class="block sm:inline">Gebruik het volgende formaat AA-12-BB.</div>
+        </div>
+        <div *ngIf="vehicleInfoForm.get('licensePlate')?.touched && vehicleInfoForm.get('licensePlate')?.hasError('invalidLicensePlate')"
+          class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-2" role="alert">
+          <div class="font-bold">Helaas is het ingevoerde kenteken niet geldig. Probeer het opnieuw.</div>
+        </div>
+      </label>
+  
+      <div class="mt-4">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Verzenden
+        </button>
+        <div class="text-red-700" *ngIf="!vehicleInfoForm.valid">Vul alle waardes correct in.</div>
+      </div>
+    </form>
+    <app-vehicle-image [selectedVehicleType]="selectedVehicleType"></app-vehicle-image>
+  </div> -->
+
+<div class="grid md:grid-cols-2">
+  <form [formGroup]="vehicleInfoForm" class="p-8" (ngSubmit)="submitForm()">
+    <h2 class="text-xl font-bold text-blue-500">Voertuiginformatie opzoeken</h2>
+
+    <label class="block mt-4">
+      <span class="text-gray-700">Van welk type voertuig wilt u voertuiginformatie opzoeken?</span>
+      <select
+        class="block w-full mt-1 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+        formControlName="vehicleType" (change)="onVehicleTypeChange($event)">
+        <option *ngFor="let type of vehicleData" [value]="type.name">{{ type.name }}</option>
+      </select>
+    </label>
+
+    <label class="block mt-4">
+      <span class="text-gray-700">Welk type [auto/motor/brommer] hebt u?</span>
+      <select
+        class="block w-full mt-1 rounded-md bg-gray-100 border-transparent focus:border-gray-500 focus:bg-white focus:ring-0"
+        formControlName="vehicleSubtype">
+        <option *ngFor="let subtype of vehicleSubtypes" [value]="subtype">{{ subtype }}</option>
+      </select>
+    </label>
+
+    <label class="block mt-4">
+      <span class="text-gray-700">Vul het kenteken van uw [auto/motor/brommer] in.</span>
+      <input type="text"
+        class="mt-1 block w-full rounded-md bg-yellow-400 border-red-400 focus:border-gray-500 focus:bg-yellow-300 focus:ring-0"
+        formControlName="licensePlate" placeholder="Bijvoorbeeld AA-BB-12" (change)="onLicensePlateChange($event)">
+      <div *ngIf="vehicleInfoForm.get('licensePlate')?.hasError('pattern')"
+        class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-2" role="alert">
+        <div class="font-bold">Oeps, het ingevoerde kenteken is niet geldig.</div>
+        <div class="block sm:inline">Gebruik het volgende formaat AA-12-BB.</div>
+      </div>
+      <div
+        *ngIf="vehicleInfoForm.get('licensePlate')?.touched && vehicleInfoForm.get('licensePlate')?.hasError('invalidLicensePlate')"
+        class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-2" role="alert">
+        <div class="font-bold">Helaas is het ingevoerde kenteken niet geldig. Probeer het opnieuw.</div>
+      </div>
+    </label>
+
+    <div class="mt-4">
+      <button type="submit" class="bg-blue-500 hover-bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        [disabled]="!vehicleInfoForm.valid">
+        Verzenden
+      </button>
+      <div class="text-red-700" *ngIf="!vehicleInfoForm.valid">Vul alle waardes correct in.</div>
+    </div>
+  </form>
+  <app-vehicle-image [selectedVehicleImage]="vehicleImage"></app-vehicle-image>
+</div>
