@@ -3,7 +3,7 @@
 |-- app.component.ts
 |-- app.module.ts
 |-- app.routing.module.ts
-|-- feature/
+|-- features/
 |   |-- vehicle/
 |       |-- vehicle.module.ts
 |       |-- vehicle.routing.module.ts
